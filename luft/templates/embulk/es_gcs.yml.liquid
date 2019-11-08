@@ -1,19 +1,17 @@
 in:
-   type: {{ env.TYPE }}
-   nodes:
-     host: {{ env.ES_HOST }}
-     port: {{ env.ES_PORT }}
-     user: {{ env.ES_USER }}
-     password: {{ env.ES_PASSWORD }}
-   queries: {{ env.ES_QUERY }}
-   index: {{ env.ES_INDEX }}
-   index_type: {{ env.ES_INDEX_TYPE }}
-   request_timeout: 180
-   per_size: 10000
-   num_threads: 1
-   retry_on_failure: 5
-   scroll: '10m'
-   {{ env.ES_FIELDS }}
+  type: elasticsearch
+  nodes:
+  - { host: {{ env.ES_URI }}, port: {{ env.ES_PORT }}, user: {{ env.ES_USER }}, password: {{ env.ES_PASSWORD }}, scheme: {{ env.ES_SCHEME }} }
+  queries:
+  -
+  index: {{ env.ES_INDEX }}
+  index_type: {{ env.ES_INDEX_TYPE }}
+  request_timeout: 60
+  limit_size: 200000
+  per_size: 1000
+  num_threads: 2
+{{ env.ES_FIELDS }}
+
 out:
    type: gcs
    bucket: {{ env.GCS_BUCKET }}

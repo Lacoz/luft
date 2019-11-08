@@ -8,7 +8,7 @@ from google.cloud import bigquery
 from luft.common.column import Column
 from luft.common.config import (
     BQ_DATA_TYPES, BQ_HIST_DEFAULT_TEMPLATE, BQ_STAGE_DEFAULT_TEMPLATE,
-    BQ_STAGE_SCHEMA_FORM, BQ_HIST_SCHEMA_FORM, GCS_BUCKET, PATH_PREFIX)
+    BQ_STAGE_SCHEMA_FORM, BQ_HIST_SCHEMA_FORM, BQ_HIST_DISABLE, GCS_BUCKET, PATH_PREFIX)
 from luft.common.logger import setup_logger
 from luft.common.utils import NoneStr, get_path_prefix
 from luft.tasks.bq_exec_task import BQExecTask
@@ -87,6 +87,9 @@ class BQLoadTask(BQExecTask):
         self._run_bq_command(stage_template.parent, [stage_template.name],
                              env_vars)
         self.load_csv()
+        if (BQ_HIST_DISABLE):
+            logger.info(f"Historization disabled env `BQ_HIST_DISABLE={BQ_HIST_DISABLE}`")
+            return
         self._create_dataset(self.hist_dataset_id)
         self._run_bq_command(hist_template.parent, [hist_template.name],
                              env_vars)
