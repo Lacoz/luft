@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Luft cli."""
+import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import List, Optional, Union
@@ -62,6 +63,7 @@ def _loop_tasks(task_list, start_date=None, end_date=None):
     for date_valid in _daterange(start, end):
         for task in task_list:
             task(ts=date_valid)
+            time.sleep(2)
             click.secho(f'Task `{task.get_task_id()}` is done!', fg='green')
 
 
