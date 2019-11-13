@@ -15,6 +15,7 @@ class EmbulkEsTaskSchema(GenericTaskSchema):
     embulk_template = fields.String()
     index_name = fields.Str()
     type_name = fields.Str()
+    queries_clause = fields.Str()
     path_prefix = fields.Str()
 
     @post_load
@@ -28,6 +29,7 @@ class EmbulkEsTaskSchema(GenericTaskSchema):
                               index_name=data.get('index_name'),
                               type_name=data.get('type_name'),
                               embulk_template=data.get('embulk_template'),
+                              queries_clause=data.get('queries_clause'),
                               yaml_file=data.get('yaml_file'),
                               path_prefix=data.get('path_prefix'),
                               env=data.get('env'),

@@ -2,8 +2,6 @@ in:
   type: elasticsearch
   nodes:
   - { host: {{ env.ES_URI }}, port: {{ env.ES_PORT }}, user: {{ env.ES_USER }}, password: {{ env.ES_PASSWORD }}, scheme: {{ env.ES_SCHEME }} }
-  queries:
-  -
   index: {{ env.ES_INDEX }}
   index_type: {{ env.ES_INDEX_TYPE }}
   request_timeout: 60
@@ -11,6 +9,7 @@ in:
   limit_size: 200000
   per_size: 1000
   num_threads: 2
+{{ env.ES_QUERIES }}
 {{ env.ES_FIELDS }}
 
 out:

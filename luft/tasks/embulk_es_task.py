@@ -20,7 +20,7 @@ class EmbulkEsTask(GenericEmbulkTask):
 
     def __init__(self, name: str, task_type: str, source_system: str, source_subsystem: str,
                  columns: List[Column],
-                 index_name: NoneStr = None, type_name: NoneStr = None,
+                 index_name: NoneStr = None, type_name: NoneStr = None, queries_clause: NoneStr = None,
                  embulk_template: NoneStr = None, path_prefix: NoneStr = None,
                  yaml_file: NoneStr = None, env: NoneStr = None, thread_name: NoneStr = None,
                  color: NoneStr = None):
@@ -42,6 +42,7 @@ class EmbulkEsTask(GenericEmbulkTask):
         self.embulk_template = embulk_template
         self.index_name = index_name
         self.type_name = type_name
+        self.queries_clause = queries_clause
         super().__init__(name=name, task_type=task_type,
                          source_system=source_system,
                          source_subsystem=source_subsystem, yaml_file=yaml_file,
@@ -82,6 +83,7 @@ class EmbulkEsTask(GenericEmbulkTask):
             **blob_storage,
             **path_prefix,
             'ES_FIELDS': self._get_column_list(),
+            'ES_QUERIES': self._get_queries_clause(),
             'ES_INDEX': self._get_index_name(),
             'ES_INDEX_TYPE': self.type_name,
         }
@@ -89,7 +91,13 @@ class EmbulkEsTask(GenericEmbulkTask):
         clean_dict.update(super_env_dict)
         return clean_dict
 
+    def _get_queries_clause(self) -> str:
+        """Get queries clause."""
+        q = ''
+        if self.queries_clause:
+            q = self.queries_clause.format(date_valid=self.get_date_valid())
 
+        return f'  queries:\n   - {q}'
 
     def _get_column_list(self) -> str:
         """Get column options for Embulk loading."""
