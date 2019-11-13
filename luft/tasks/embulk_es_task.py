@@ -93,7 +93,14 @@ class EmbulkEsTask(GenericEmbulkTask):
 
     def _get_column_list(self) -> str:
         """Get column options for Embulk loading."""
-        col_list = [ f"\n   - {{ name: {col.name}, type: {col._embulk_column_mapper()} }}" for col in self.columns ]
+        col_list = []
+        for col in self.columns:
+            metadata = ""
+            if (col.metadata):
+                metadata = f", metadata: {col.metadata}"
+            str = f"\n   - {{ name: {col.name}, type: {col._embulk_column_mapper()} {metadata}}}"
+            col_list.append(str)
+
         return '  fields:{}'.format(''.join(filter(None, col_list)))
 
 
