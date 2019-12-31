@@ -33,7 +33,7 @@ if README_PATH.exists():
 install_requires = []
 extras_require = {
     'dev': [],
-    'bq': ['google-cloud-bigquery==1.18.0'],
+    'bq': ['google-cloud-bigquery==1.23.1'],
     'qlik-cloud': ['selenium==3.141.0']
 }
 
