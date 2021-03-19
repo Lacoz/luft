@@ -9,5 +9,5 @@ flake8-mypy
 pep8-naming
 flake8-quotes
 pylint
-pydocstyle<4.0.0
+pydocstyle<7.0.0
 docker
